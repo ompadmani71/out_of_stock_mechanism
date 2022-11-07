@@ -1,16 +1,13 @@
-# out_of_stock
+# out_of_stock_mechanism
+
+![flutter_logo](https://user-images.githubusercontent.com/108392662/191526508-39a3a0f1-41b4-46b1-82a2-0754eac264c5.png)
 
 A new Flutter project.
 
-## Getting Started
+# Sample image
+<img src="https://user-images.githubusercontent.com/108392662/200175807-82c8d36d-a2ca-4165-9a47-123ad28bd364.jpg" width="300" height="600">
+<img src="https://user-images.githubusercontent.com/108392662/200175795-0a835b38-a552-40ec-89ef-56d7e27f1cef.jpg" width="300" height="600">
 
-This project is a starting point for a Flutter application.
+# Sample video
+https://user-images.githubusercontent.com/108392662/200175868-e89e67ab-d159-40c0-85c1-80d4b4cb3dbe.mp4
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

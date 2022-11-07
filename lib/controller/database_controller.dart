@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'dart:ui';
-
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/product_model.dart';
 
 class DataBaseController extends GetxController {
@@ -16,7 +13,6 @@ class DataBaseController extends GetxController {
   RxInt countDown = 30.obs;
   Random random = Random();
   RxInt randomNumber = 0.obs;
-  RxSet<int> randomList = <int>{}.obs;
   RxBool isAddToCart = false.obs;
 
   RxList<Product> productFetchData = <Product>[].obs;
@@ -85,19 +81,8 @@ class DataBaseController extends GetxController {
     String sql = "SELECT *FROM $tableName";
 
     List<Map<String, dynamic>> data = await dbs!.rawQuery(sql);
-    List<Product> products = productFromJson(jsonEncode(data));
-
-    randomList.clear();
-    for (int i = 0; randomList.length != 10; i++) {
-      int j = random.nextInt(15);
-      randomList.add(j);
-    }
-
-    randomNumber.value = random.nextInt(10);
-    productFetchData.clear();
-    randomList.forEach((element) {
-      productFetchData.add(products[element]);
-    });
+    productFetchData.value = productFromJson(jsonEncode(data));
+    randomNumber.value = random.nextInt(15);
     countDownTimer();
   }
 
@@ -105,13 +90,7 @@ class DataBaseController extends GetxController {
     String sql = "SELECT *FROM $tableName";
 
     List<Map<String, dynamic>> data = await dbs!.rawQuery(sql);
-    List<Product> products = productFromJson(jsonEncode(data));
-
-    productFetchData.clear();
-    randomList.forEach((element) {
-      productFetchData.add(products[element]);
-    });
-
+    productFetchData.value = productFromJson(jsonEncode(data));
   }
 
   Future<String?> getImagesBytes({required String url}) async {
@@ -123,7 +102,7 @@ class DataBaseController extends GetxController {
     return null;
   }
 
-  Future<void> addToCart({required Product product, required int index}) async {
+  Future<void> addToCart({required Product product}) async {
     dbs = await init();
 
     int? quantity;
@@ -136,9 +115,7 @@ class DataBaseController extends GetxController {
 
     String selectQuery = "SELECT *FROM $tableName WHERE $column1_ID = ${product.id};";
     List<Map<String, dynamic>> data = await dbs!.rawQuery(selectQuery);
-    List<Product> recoverProduct = productFromJson(jsonEncode(data));
-
-    productFetchData[index] =  recoverProduct[0];
+    productFetchData[product.id! - 1] =  Product.fromJson(data[0]);
   }
 
   Future<void> stockManage() async {
@@ -149,14 +126,9 @@ class DataBaseController extends GetxController {
     String query = "UPDATE  $tableName SET $column4_quantity = 0 WHERE $column1_ID = $id;";
     dbs!.rawUpdate(query);
 
-    String selectQuery = "SELECT *FROM $tableName;";
+    String selectQuery = "SELECT *FROM $tableName WHERE $column1_ID = $id;";
     List<Map<String, dynamic>> data = await dbs!.rawQuery(selectQuery);
-    List<Product> products = productFromJson(jsonEncode(data));
-
-    productFetchData.clear();
-    randomList.forEach((element) {
-      productFetchData.add(products[element]);
-    });
+    productFetchData[randomNumber.value] = Product.fromJson(data[0]);
   }
 
   void countDownTimer() async {

@@ -124,6 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 SizedBox(height: 10),
+
+                                if(product.quantity != 0)
                                 InkWell(
                                   onTap: () {
                                     if (dataBaseController.randomNumber.value ==
@@ -132,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
 
                                     dataBaseController.addToCart(
-                                        product: product, index: index);
+                                        product: product);
                                   },
                                   borderRadius: BorderRadius.circular(10),
                                   child: Container(
